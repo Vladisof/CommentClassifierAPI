@@ -7,22 +7,56 @@ from typing import Dict, List, Optional
 
 
 class SentimentClassifier:
-    def __init__(self, model_dir: Path, device: Optional[str] = None):
-        self.model_dir = Path(model_dir)
+    def __init__(self, model_dir: Path, device: Optional[str] = None, hf_model_name: Optional[str] = None):
+        self.model_dir = Path(model_dir) if model_dir else None
+        self.hf_model_name = hf_model_name
         self.device = torch.device(device if device else ('cuda' if torch.cuda.is_available() else 'cpu'))
         self._load_model()
 
     def _load_model(self):
-        self.tokenizer = AutoTokenizer.from_pretrained(str(self.model_dir))
-        self.model = AutoModelForSequenceClassification.from_pretrained(str(self.model_dir))
+        # Try loading from local directory first
+        if self.model_dir and self.model_dir.exists():
+            try:
+                self.tokenizer = AutoTokenizer.from_pretrained(str(self.model_dir))
+                self.model = AutoModelForSequenceClassification.from_pretrained(str(self.model_dir))
+                self.model.to(self.device)
+                self.model.eval()
+
+                label_mapping_path = self.model_dir / "label_mapping.json"
+                with open(label_mapping_path, 'r') as f:
+                    mappings = json.load(f)
+                    self.label_to_id = mappings['label_to_id']
+                    self.id_to_label = {int(k): v for k, v in mappings['id_to_label'].items()}
+                return
+            except Exception as e:
+                print(f"Failed to load from local directory: {e}")
+
+        # Fallback to Hugging Face Hub or use a default multilingual model
+        if self.hf_model_name:
+            model_name = self.hf_model_name
+        else:
+            # Use a lightweight multilingual sentiment model as default
+            model_name = "cardiffnlp/twitter-xlm-roberta-base-sentiment"
+
+        print(f"Loading model from Hugging Face Hub: {model_name}")
+        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+        self.model = AutoModelForSequenceClassification.from_pretrained(model_name)
         self.model.to(self.device)
         self.model.eval()
 
-        label_mapping_path = self.model_dir / "label_mapping.json"
-        with open(label_mapping_path, 'r') as f:
-            mappings = json.load(f)
-            self.label_to_id = mappings['label_to_id']
-            self.id_to_label = {int(k): v for k, v in mappings['id_to_label'].items()}
+        # Create default label mapping based on model config
+        num_labels = self.model.config.num_labels
+        if num_labels == 3:
+            # Sentiment model (negative, neutral, positive)
+            self.id_to_label = {0: 'negative', 1: 'neutral', 2: 'positive'}
+        elif num_labels == 2:
+            # Binary classification (non-toxic, toxic)
+            self.id_to_label = {0: 'non-toxic', 1: 'toxic'}
+        else:
+            # Generic labels
+            self.id_to_label = {i: f'label_{i}' for i in range(num_labels)}
+
+        self.label_to_id = {v: k for k, v in self.id_to_label.items()}
 
     def predict(self, text: str, return_probabilities: bool = True) -> Dict:
         encoding = self.tokenizer(
@@ -95,9 +129,16 @@ class SentimentClassifier:
 
 
 class MultiTaskClassifier:
-    def __init__(self, sentiment_model_dir: Path, toxicity_model_dir: Path, device: Optional[str] = None):
-        self.sentiment_classifier = SentimentClassifier(sentiment_model_dir, device)
-        self.toxicity_classifier = SentimentClassifier(toxicity_model_dir, device)
+    def __init__(self, sentiment_model_dir: Path = None, toxicity_model_dir: Path = None,
+                 device: Optional[str] = None,
+                 sentiment_hf_model: Optional[str] = None,
+                 toxicity_hf_model: Optional[str] = None):
+        self.sentiment_classifier = SentimentClassifier(
+            sentiment_model_dir, device, sentiment_hf_model or "cardiffnlp/twitter-xlm-roberta-base-sentiment"
+        )
+        self.toxicity_classifier = SentimentClassifier(
+            toxicity_model_dir, device, toxicity_hf_model or "cardiffnlp/twitter-roberta-base-offensive"
+        )
 
     def predict(self, text: str) -> Dict:
         sentiment_result = self.sentiment_classifier.predict(text)

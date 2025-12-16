@@ -18,12 +18,18 @@ API for sentiment and toxicity classification of comments. Uses XLM-RoBERTa for 
 
 ## Quick Start
 
-**Prepare data**: create `data/clean_comments.csv` with columns:
+**Option 1: Use with pre-trained Hugging Face models** (no local models needed):
+```bash
+# API will automatically download models from Hugging Face Hub
+docker-compose up --build
+```
+
+**Option 2: Train your own models** - create `data/clean_comments.csv` with columns:
 - `text` - comment text
 - `sentiment` - positive/neutral/negative
 - `toxicity` - toxic/non-toxic
 
-**Train the model**:
+Then train:
 ```bash
 python src/transformers_model/train_transformer.py
 ```
@@ -37,6 +43,19 @@ start_api.bat
 
 API available at `http://localhost:8000`
 - Documentation: `http://localhost:8000/docs`
+
+## Configuration
+
+The API can use either:
+1. **Local models** (if available in `models/` directory)
+2. **Hugging Face Hub models** (downloaded automatically)
+
+Configure via environment variables:
+```bash
+# Optional: Specify Hugging Face models
+SENTIMENT_HF_MODEL=cardiffnlp/twitter-xlm-roberta-base-sentiment
+TOXICITY_HF_MODEL=cardiffnlp/twitter-roberta-base-offensive
+```
 
 ## API Usage
 

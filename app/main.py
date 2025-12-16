@@ -1,5 +1,6 @@
 from pathlib import Path
 from contextlib import asynccontextmanager
+import os
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -18,7 +19,16 @@ MODEL_DIR = PROJECT_ROOT / "models"
 SENTIMENT_MODEL_DIR = MODEL_DIR / "xlmr_sentiment"
 TOXICITY_MODEL_DIR = MODEL_DIR / "xlmr_toxicity"
 
-classifier_service = ClassifierService(SENTIMENT_MODEL_DIR, TOXICITY_MODEL_DIR)
+# Hugging Face model names from environment variables (optional)
+SENTIMENT_HF_MODEL = os.getenv("SENTIMENT_HF_MODEL", "cardiffnlp/twitter-xlm-roberta-base-sentiment")
+TOXICITY_HF_MODEL = os.getenv("TOXICITY_HF_MODEL", "cardiffnlp/twitter-roberta-base-offensive")
+
+classifier_service = ClassifierService(
+    SENTIMENT_MODEL_DIR,
+    TOXICITY_MODEL_DIR,
+    sentiment_hf_model=SENTIMENT_HF_MODEL,
+    toxicity_hf_model=TOXICITY_HF_MODEL
+)
 
 
 @asynccontextmanager

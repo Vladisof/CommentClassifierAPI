@@ -11,6 +11,9 @@ services:
       - API_PORT=8000
       - LOG_LEVEL=INFO
       - DEVICE=cpu
+      # Optional: Override default Hugging Face models
+      - SENTIMENT_HF_MODEL=cardiffnlp/twitter-xlm-roberta-base-sentiment
+      - TOXICITY_HF_MODEL=cardiffnlp/twitter-roberta-base-offensive
     volumes:
       - ./models:/app/models
       - ./data:/app/data
