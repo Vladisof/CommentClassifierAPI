@@ -1,0 +1,56 @@
+text,sentiment,toxicity
+This is absolutely amazing! I love it so much!,positive,non-toxic
+"Great product, would recommend to everyone!",positive,non-toxic
+Fantastic quality and fast shipping!,positive,non-toxic
+Best purchase I've ever made!,positive,non-toxic
+"Excellent service, very happy with this!",positive,non-toxic
+"Wow, this exceeded all my expectations!",positive,non-toxic
+Perfect! Exactly what I was looking for!,positive,non-toxic
+Outstanding performance and great value!,positive,non-toxic
+I'm so impressed with this!,positive,non-toxic
+"Absolutely brilliant, five stars!",positive,non-toxic
+This is terrible and I hate it.,negative,non-toxic
+"Worst experience ever, complete waste of money.",negative,non-toxic
+"Don't buy this, it's awful.",negative,non-toxic
+Very disappointed with the quality.,negative,non-toxic
+"Not worth it at all, very poor.",negative,non-toxic
+"Horrible product, broke after one day.",negative,non-toxic
+"I want my money back, this is trash.",negative,non-toxic
+Terrible customer service and bad product.,negative,non-toxic
+"Extremely unsatisfied, would not recommend.",positive,non-toxic
+Biggest waste of money ever.,negative,non-toxic
+"It's okay, nothing special.",neutral,non-toxic
+"Average product, does the job.",neutral,non-toxic
+"Not bad, not great either.",positive,non-toxic
+"It works fine, nothing more to say.",neutral,non-toxic
+Decent quality for the price.,neutral,non-toxic
+"Could be better, could be worse.",neutral,non-toxic
+"It's alright, met my basic expectations.",neutral,non-toxic
+"Fair product, nothing outstanding.",positive,non-toxic
+"Standard quality, as expected.",neutral,non-toxic
+"Neither good nor bad, just okay.",neutral,non-toxic
+You are stupid and worthless!,neutral,toxic
+This is garbage and you're an idiot for making it.,neutral,toxic
+"I hate you all, you're all terrible!",negative,non-toxic
+You're a complete moron!,neutral,toxic
+"Shut up, nobody cares what you think!",neutral,toxic
+You're pathetic and your product sucks!,neutral,toxic
+What a bunch of losers!,neutral,toxic
+You should be ashamed of yourself!,neutral,toxic
+"This is so dumb, just like you!",neutral,toxic
+You're all idiots and this is trash!,negative,toxic
+"Really enjoying this, thank you!",positive,non-toxic
+Good value for money.,neutral,non-toxic
+Happy with my purchase!,positive,non-toxic
+"Nice quality, satisfied customer.",positive,non-toxic
+This works well for my needs.,neutral,non-toxic
+"Not what I expected, unfortunately.",neutral,non-toxic
+The quality is not great.,positive,non-toxic
+I'm not satisfied with this purchase.,positive,non-toxic
+Could use some improvements.,neutral,non-toxic
+Not meeting my expectations.,neutral,non-toxic
+It's functional and does what it says.,neutral,non-toxic
+Pretty standard product.,neutral,non-toxic
+"No complaints, no praises.",neutral,non-toxic
+It serves its purpose.,neutral,non-toxic
+"Basic product, works as intended.",neutral,non-toxic

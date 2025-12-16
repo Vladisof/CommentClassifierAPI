@@ -1,0 +1,44 @@
+# Development Dependencies
+memory-profiler>=0.61.0
+py-spy>=0.3.14
+# Performance profiling
+
+pytest>=9.0.0
+pytest-cov>=7.0.0
+# Testing
+
+notebook>=7.0.0
+jupyter>=1.0.0
+ipython>=8.14.0
+# Development tools
+
+mkdocstrings-python>=1.1.0
+mkdocstrings>=0.22.0
+mkdocs-material>=9.1.0
+mkdocs>=1.5.0
+# Documentation
+
+pre-commit>=3.3.0
+# Pre-commit hooks
+
+types-requests>=2.31.0
+# Type stubs
+
+flake8>=6.0.0
+isort>=5.12.0
+mypy>=1.4.0
+pylint>=2.17.0
+black>=23.7.0
+# Code Quality
+
+httpx>=0.24.0  # For TestClient async support
+pytest-asyncio>=0.21.0
+pytest-cov>=4.1.0
+pytest>=7.4.0
+# Testing
+
+-r requirements.txt
+# Core dependencies
+
+# Install with: pip install -r requirements-dev.txt
+
