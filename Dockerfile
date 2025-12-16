@@ -14,10 +14,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY app/ ./app/
 COPY src/ ./src/
-COPY models/ ./models/
-COPY data/ ./data/
 
-RUN mkdir -p logs
+# Create directories for models and data (will be empty in CI/CD, populated via volumes in production)
+RUN mkdir -p models data logs
+COPY models/.gitkeep ./models/
+COPY data/.gitkeep ./data/
 
 EXPOSE 8000
 
